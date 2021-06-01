@@ -1,9 +1,8 @@
 #if os(macOS) || os(iOS)
 import FusionLocation_Common
-
 import CoreLocation
 
-public struct LocationManager {  
+public class LocationManager {  
   fileprivate class CLDelegate: NSObject {
     typealias Receiver = (Location) -> Void
     var receiver: Receiver?
@@ -14,14 +13,16 @@ public struct LocationManager {
   
   public let usage: LocationUsage
   
-  public init(usage: LocationUsage) {
+  public required init(usage: LocationUsage) {
      self.usage = usage
      self.delegate = CLDelegate()
      self.locationManager = CLLocationManager()
      self.locationManager.delegate = self.delegate          
   }
-  
-  private func requestAuthorization() {
+}
+
+extension LocationManager: LocationManagerProtocol {  
+  public func requestAuthorization() {
     if #available(OSX 10.15, *) {
       switch self.usage {
         case .always:
