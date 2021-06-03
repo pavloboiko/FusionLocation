@@ -8,7 +8,7 @@ import AndroidLocation
 import FusionLocation_Common
 
 
-public struct LocationManager {
+public class LocationManager {
   typealias AndroidLocationManager = AndroidLocation.LocationManager
 
   private var currentActivity: Activity? { Application.currentActivity }
@@ -27,13 +27,15 @@ public struct LocationManager {
   
     self.locationListener = LocationListener()
   }
+}
 
-  private func requestPermissions() {
+extension LocationManager: LocationManagerProtocol {
+  public func requestAuthorization() {
     currentActivity?.requestPermissions(      
       permissions: [Manifest.permission.ACCESS_FINE_LOCATION], requestCode: 1111)
   }
 
-  private func checkPermissions() -> Bool {
+  public func checkAuthorization() -> Bool {
     guard
       let status = currentActivity?.checkSelfPermission(
         permission: Manifest.permission.ACCESS_FINE_LOCATION),
@@ -66,13 +68,21 @@ public struct LocationManager {
     receiver(aLocation.location)
   }
 
-  public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location) -> Void) {
+	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location) -> Void) {
 
-  }
+	}
 
-  public func stopUpdatingLocation() {
+  	public func stopUpdatingLocation() {
 
-  }
+	}
+  
+    public func distanceBetween(from location1: Location, to location2: Location) -> Double {
+        return 0
+    }
+
+    public func bearingBetween(from location1: Location, to location2: Location) -> Double {
+		return 0
+    }
 }
 
 fileprivate extension AndroidLocation.Location {
