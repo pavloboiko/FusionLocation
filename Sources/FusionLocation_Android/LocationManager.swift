@@ -50,7 +50,7 @@ extension LocationManager: LocationManagerProtocol {
     return true
   }
 
-  public func requestCurrentLocation(receiver: @escaping (FusionLocation_Common.Location) -> Void) {    
+  public func requestCurrentLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {    
     guard
       checkPermissions(),
       let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
@@ -68,7 +68,7 @@ extension LocationManager: LocationManagerProtocol {
     receiver(aLocation.location)
   }
 
-	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location) -> Void) {
+	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
 
 	}
 
