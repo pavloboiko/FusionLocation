@@ -43,7 +43,7 @@ extension LocationManager: LocationManagerProtocol {
       status == PackageManagerStatic.PERMISSION_GRANTED
     else {
       print("Permissions not granted. Requesting...")
-      //requestPermissions()
+  
       return false
     }
     print("Permissions granted")
@@ -52,13 +52,10 @@ extension LocationManager: LocationManagerProtocol {
 
   public func requestCurrentLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {    
     guard
-      //checkPermissions(),
-      let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
+        let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: true)
     else {
       return
-    }
-        
-    self.locationManager?.requestLocationUpdates(provider: provider, minTime: 400, minDistance: 1, listener: locationListener)
+    }   
             
     guard let aLocation = self.locationManager?.getLastKnownLocation(provider: provider) else {
       print("Last known location is unavailable")
@@ -69,15 +66,31 @@ extension LocationManager: LocationManagerProtocol {
   }
 
 	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
+	    guard
+    	    let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
+	    else {
+	      return
+    	}
+	
+	    self.locationManager?.requestLocationUpdates(provider: provider, minTime: 400, minDistance: 1, listener: locationListener)
+            
+    	guard let aLocation = self.locationManager?.getLastKnownLocation(provider: provider) else {
+      		print("Last known location is unavailable")
+      		return
+    	}
 
+	    receiver(aLocation.location)
 	}
 
   	public func stopUpdatingLocation() {
+  	    self.locationManager?.removeUpdates(locationListener)
 
 	}
   
     public func distanceBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
-        return 0
+    	let results = [Double]
+    	AndroidLocation.Location.distanceBetween(location1.latitude, location1.longitude, location2.latitude, location2.longitude, results);
+        return results[0]
     }
 
     public func bearingBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
@@ -95,6 +108,7 @@ fileprivate extension AndroidLocation.Location {
 class LocationListener: Object, AndroidLocation.LocationListener {
   func onLocationChanged(location: AndroidLocation.Location?) { 
     print("Location: \(location?.getLatitude()), \(location?.getLongitude())")
+    receiver(Location(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
   }
 
   func onStatusChanged(provider: String, status: Int32, extras: Bundle?) { 
