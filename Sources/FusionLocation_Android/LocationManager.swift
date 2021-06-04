@@ -83,13 +83,13 @@ extension LocationManager: LocationManagerProtocol {
 	}
 
   	public func stopUpdatingLocation() {
-  	    self.locationManager?.removeUpdates(locationListener)
+  	    self.locationManager?.removeUpdates(listener: locationListener)
 
 	}
   
     public func distanceBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
-    	let results = [Double]
-    	AndroidLocation.Location.distanceBetween(location1.latitude, location1.longitude, location2.latitude, location2.longitude, results);
+    	let results = [Double]()
+    	AndroidLocation.Location.distanceBetween(startLatitude:location1.latitude, startLongitude: location1.longitude, endLatitude:location2.latitude, endLongitude:location2.longitude, results: results);
         return results[0]
     }
 
