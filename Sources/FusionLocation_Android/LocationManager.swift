@@ -9,6 +9,7 @@ import FusionLocation_Common
 
 
 public class LocationManager {
+
   typealias AndroidLocationManager = AndroidLocation.LocationManager
 
   private var currentActivity: Activity? { Application.currentActivity }
@@ -17,7 +18,7 @@ public class LocationManager {
   private let locationListener: LocationListener
   
   public let usage: LocationUsage
-
+  
   public required init(usage: LocationUsage) {
     self.usage = usage
 
@@ -66,6 +67,7 @@ extension LocationManager: LocationManagerProtocol {
   }
 
 	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
+		self.locationListener.receiver = receiver
 	    guard
     	    let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
 	    else {
@@ -83,13 +85,17 @@ extension LocationManager: LocationManagerProtocol {
 	}
 
   	public func stopUpdatingLocation() {
+		self.locationListener.receiver = nil
   	    self.locationManager?.removeUpdates(listener: locationListener)
 
 	}
   
     public func distanceBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
     	let results = [Float]()
-    	AndroidLocation.Location.distanceBetween(startLatitude:location1.coordinate.latitude, startLongitude: location1.coordinate.longitude, endLatitude:location2.coordinate.latitude, endLongitude:location2.coordinate.longitude, results: results);
+    	AndroidLocation.Location.distanceBetween(startLatitude:location1.coordinate.latitude, 
+    											startLongitude: location1.coordinate.longitude, 
+    											endLatitude:location2.coordinate.latitude, 
+    											endLongitude:location2.coordinate.longitude, results: results);
         return Double(results[0])
     }
 
@@ -102,7 +108,7 @@ extension LocationManager: LocationManagerProtocol {
 		endLocation.setLatitude(latitude: location2.coordinate.latitude)
 		endLocation.setLongitude(longitude: location2.coordinate.longitude)
 		
-		return startLocation.bearingTo(dest: endLocation)
+		return Double(startLocation.bearingTo(dest: endLocation))
 		
 //		func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
 //        func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
@@ -131,9 +137,11 @@ fileprivate extension AndroidLocation.Location {
 
 
 class LocationListener: Object, AndroidLocation.LocationListener {
+  var receiver: (FusionLocation_Common.Location?) -> Void?
+  
   func onLocationChanged(location: AndroidLocation.Location?) { 
     print("Location: \(location?.getLatitude()), \(location?.getLongitude())")
-    receiver(Location(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+    receiver(FusionLocation_Common.Location(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
   }
 
   func onStatusChanged(provider: String, status: Int32, extras: Bundle?) { 
