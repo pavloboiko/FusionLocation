@@ -94,11 +94,11 @@ extension LocationManager: LocationManagerProtocol {
     }
 
     public func bearingBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
-	    let startLocation = AndroidLocation.Location(string: AndroidLocation.LocationManager.GPS_PROVIDER)
+	    let startLocation = AndroidLocation.Location(provider: AndroidLocation.LocationManager.GPS_PROVIDER)
 		startLocation.setLatitude(latitude: location1.coordinate.latitude)
 		startLocation.setLongitude(longitude: location1.coordinate.longitude)
 		
-		let endLocation = AndroidLocation.Location(string: AndroidLocation.LocationManager.GPS_PROVIDER)
+		let endLocation = AndroidLocation.Location(provider: AndroidLocation.LocationManager.GPS_PROVIDER)
 		endLocation.setLatitude(latitude: location2.coordinate.latitude)
 		endLocation.setLongitude(longitude: location2.coordinate.longitude)
 		
