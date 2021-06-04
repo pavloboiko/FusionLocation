@@ -141,6 +141,7 @@ class LocationListener: Object, AndroidLocation.LocationListener {
   
   func onLocationChanged(location: AndroidLocation.Location?) { 
     print("Location: \(location?.getLatitude()), \(location?.getLongitude())")
+    guard let receiver = receiver, let location = location else { return }
     receiver(location.location)
   }
 
