@@ -18,7 +18,7 @@ public class LocationManager {
   
   public let usage: LocationUsage
 
-  public init(usage: LocationUsage) {
+  public required init(usage: LocationUsage) {
     self.usage = usage
 
     self.locationManager =
