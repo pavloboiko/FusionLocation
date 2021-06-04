@@ -1,5 +1,5 @@
 import Java
-import Java.Lang.Math
+import JavaLangMath
 import Android
 import AndroidOS
 import AndroidApp
@@ -95,22 +95,32 @@ extension LocationManager: LocationManagerProtocol {
     }
 
     public func bearingBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
-		func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
-        func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
-        
-        let lat1 = degreesToRadians(degrees: location1.coordinate.latitude)
-        let lon1 = degreesToRadians(degrees: location1.coordinate.longitude)
-
-        let lat2 = degreesToRadians(degrees: location2.coordinate.latitude)
-        let lon2 = degreesToRadians(degrees: location2.coordinate.longitude)
-
-        let dLon = lon2 - lon1
-
-        let y = sin(dLon) * cos(lat2)
-        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
-        let radiansBearing = atan2(y, x)
-
-        return radiansToDegrees(radians: radiansBearing)
+	    let startLocation = AndroidLocation.Location(string: AndroidLocation.LocationManager.GPS_PROVIDER)
+		startLocation.setLatitude(latitude: location1.coordinate.latitude)
+		startLocation.setLongitude(longitude: location1.coordinate.longitude)
+		
+		let endLocation = AndroidLocation.Location(string: AndroidLocation.LocationManager.GPS_PROVIDER)
+		endLocation.setLatitude(latitude: location2.coordinate.latitude)
+		endLocation.setLongitude(longitude: location2.coordinate.longitude)
+		
+		return startLocation.bearingTo(dest: endLocation)
+		
+//		func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
+//        func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
+//        
+//        let lat1 = degreesToRadians(degrees: location1.coordinate.latitude)
+//        let lon1 = degreesToRadians(degrees: location1.coordinate.longitude)
+//
+//        let lat2 = degreesToRadians(degrees: location2.coordinate.latitude)
+//        let lon2 = degreesToRadians(degrees: location2.coordinate.longitude)
+//
+//        let dLon = lon2 - lon1
+//
+//        let y = sin(dLon) * cos(lat2)
+//        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+//        let radiansBearing = atan2(y, x)
+//
+//        return radiansToDegrees(radians: radiansBearing)
     }
 }
 
