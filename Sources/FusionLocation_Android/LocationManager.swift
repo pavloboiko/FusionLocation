@@ -43,7 +43,7 @@ extension LocationManager: LocationManagerProtocol {
       status == PackageManagerStatic.PERMISSION_GRANTED
     else {
       print("Permissions not granted. Requesting...")
-      requestPermissions()
+      //requestPermissions()
       return false
     }
     print("Permissions granted")
@@ -52,7 +52,7 @@ extension LocationManager: LocationManagerProtocol {
 
   public func requestCurrentLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {    
     guard
-      checkPermissions(),
+      //checkPermissions(),
       let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
     else {
       return
