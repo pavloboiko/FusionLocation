@@ -137,7 +137,7 @@ fileprivate extension AndroidLocation.Location {
 
 
 class LocationListener: Object, AndroidLocation.LocationListener {
-  var receiver: (FusionLocation_Common.Location?) -> Void
+  var receiver: ((FusionLocation_Common.Location?) -> Void)?
   
   func onLocationChanged(location: AndroidLocation.Location?) { 
     print("Location: \(location?.getLatitude()), \(location?.getLongitude())")
