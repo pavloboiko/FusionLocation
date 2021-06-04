@@ -85,7 +85,7 @@ extension LocationManager: LocationManagerProtocol {
 	}
 
   	public func stopUpdatingLocation() {
-		self.locationListener.receiver = nil
+//		self.locationListener.receiver = nil
   	    self.locationManager?.removeUpdates(listener: locationListener)
 
 	}
@@ -137,7 +137,7 @@ fileprivate extension AndroidLocation.Location {
 
 
 class LocationListener: Object, AndroidLocation.LocationListener {
-  var receiver: (FusionLocation_Common.Location?) -> Void? = nil
+  var receiver: (FusionLocation_Common.Location?) -> Void
   
   func onLocationChanged(location: AndroidLocation.Location?) { 
     print("Location: \(location?.getLatitude()), \(location?.getLongitude())")
