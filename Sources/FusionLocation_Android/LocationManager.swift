@@ -1,4 +1,5 @@
 import Java
+import Java.Lang.Math
 import Android
 import AndroidOS
 import AndroidApp
@@ -89,7 +90,7 @@ extension LocationManager: LocationManagerProtocol {
   
     public func distanceBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
     	let results = [Float]()
-    	AndroidLocation.Location.distanceBetween(startLatitude:location1.latitude, startLongitude: location1.longitude, endLatitude:location2.latitude, endLongitude:location2.longitude, results: results);
+    	AndroidLocation.Location.distanceBetween(startLatitude:location1.coordinate.latitude, startLongitude: location1.coordinate.longitude, endLatitude:location2.coordinate.latitude, endLongitude:location2.coordinate.longitude, results: results);
         return Double(results[0])
     }
 
