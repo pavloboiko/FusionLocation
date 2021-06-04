@@ -76,11 +76,11 @@ extension LocationManager: LocationManagerProtocol {
 
 	}
   
-    public func distanceBetween(from location1: Location, to location2: Location) -> Double {
+    public func distanceBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
         return 0
     }
 
-    public func bearingBetween(from location1: Location, to location2: Location) -> Double {
+    public func bearingBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
 		return 0
     }
 }
