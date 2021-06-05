@@ -91,12 +91,22 @@ extension LocationManager: LocationManagerProtocol {
 	}
   
     public func distanceBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
-    	let results = [Float]()
-    	AndroidLocation.Location.distanceBetween(startLatitude:location1.coordinate.latitude, 
-    											startLongitude: location1.coordinate.longitude, 
-    											endLatitude:location2.coordinate.latitude, 
-    											endLongitude:location2.coordinate.longitude, results: results);
-        return Double(results[0])
+//    	let results = [Float]()
+//    	AndroidLocation.Location.distanceBetween(startLatitude:location1.coordinate.latitude, 
+//    											startLongitude: location1.coordinate.longitude, 
+//    											endLatitude:location2.coordinate.latitude, 
+//    											endLongitude:location2.coordinate.longitude, results: results);
+//        return Double(results[0])
+//        
+        let startLocation = AndroidLocation.Location(provider: AndroidLocation.LocationManager.GPS_PROVIDER)
+		startLocation.setLatitude(latitude: location1.coordinate.latitude)
+		startLocation.setLongitude(longitude: location1.coordinate.longitude)
+		
+		let endLocation = AndroidLocation.Location(provider: AndroidLocation.LocationManager.GPS_PROVIDER)
+		endLocation.setLatitude(latitude: location2.coordinate.latitude)
+		endLocation.setLongitude(longitude: location2.coordinate.longitude)
+		
+		return Double(startLocation.distanceTo(dest: endLocation))
     }
 
     public func bearingBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
