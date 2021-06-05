@@ -85,19 +85,12 @@ extension LocationManager: LocationManagerProtocol {
 	}
 
   	public func stopUpdatingLocation() {
-//		self.locationListener.receiver = nil
+		self.locationListener.receiver = nil
   	    self.locationManager?.removeUpdates(listener: locationListener)
 
 	}
   
     public func distanceBetween(from location1: FusionLocation_Common.Location, to location2: FusionLocation_Common.Location) -> Double {
-//    	let results = [Float]()
-//    	AndroidLocation.Location.distanceBetween(startLatitude:location1.coordinate.latitude, 
-//    											startLongitude: location1.coordinate.longitude, 
-//    											endLatitude:location2.coordinate.latitude, 
-//    											endLongitude:location2.coordinate.longitude, results: results);
-//        return Double(results[0])
-//        
         let startLocation = AndroidLocation.Location(provider: AndroidLocation.LocationManager.GPS_PROVIDER)
 		startLocation.setLatitude(latitude: location1.coordinate.latitude)
 		startLocation.setLongitude(longitude: location1.coordinate.longitude)
@@ -119,23 +112,6 @@ extension LocationManager: LocationManagerProtocol {
 		endLocation.setLongitude(longitude: location2.coordinate.longitude)
 		
 		return Double(startLocation.bearingTo(dest: endLocation))
-		
-//		func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
-//        func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
-//        
-//        let lat1 = degreesToRadians(degrees: location1.coordinate.latitude)
-//        let lon1 = degreesToRadians(degrees: location1.coordinate.longitude)
-//
-//        let lat2 = degreesToRadians(degrees: location2.coordinate.latitude)
-//        let lon2 = degreesToRadians(degrees: location2.coordinate.longitude)
-//
-//        let dLon = lon2 - lon1
-//
-//        let y = sin(dLon) * cos(lat2)
-//        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
-//        let radiansBearing = atan2(y, x)
-//
-//        return radiansToDegrees(radians: radiansBearing)
     }
 }
 
