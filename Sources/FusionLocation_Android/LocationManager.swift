@@ -52,18 +52,14 @@ extension LocationManager: LocationManagerProtocol {
   }
 
   public func requestCurrentLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {    
-    guard
-        let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
+  	self.locationListener.receiver = receiver  		
+   	guard
+    	let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: true)
     else {
       return
     }   
-            
-    guard let aLocation = self.locationManager?.getLastKnownLocation(provider: provider) else {
-      print("Last known location is unavailable")
-      return
-    }
-
-    receiver(aLocation.location)
+    
+    self.locationManager?.requestSingleUpdate(provider: provider, listener: locationListener, looper: nil)
   }
 
 	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
