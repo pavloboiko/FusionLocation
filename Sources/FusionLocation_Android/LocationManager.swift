@@ -1,7 +1,6 @@
 import Java
 import Android
 import AndroidOS
-import AndroidOSLooper
 import AndroidApp
 import AndroidContent
 import AndroidLocation
@@ -60,7 +59,13 @@ extension LocationManager: LocationManagerProtocol {
       return
     }   
     
-    self.locationManager?.requestSingleUpdate(provider: provider, listener: locationListener, looper: AndroidOS.Looper())
+    //self.locationManager?.requestSingleUpdate(provider: provider, listener: locationListener, looper: nil)
+      	guard let aLocation = self.locationManager?.getLastKnownLocation(provider: provider) else {
+      		print("Last known location is unavailable")
+      		return
+    	}
+
+	    receiver(aLocation.location)
   }
 
 	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
