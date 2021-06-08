@@ -124,35 +124,34 @@ extension LocationManager: LocationManagerProtocol {
 }
 
 fileprivate extension AndroidLocation.Location {
-  var location: FusionLocation_Common.Location {
-    FusionLocation_Common.Location(latitude: self.getLatitude(), longitude: self.getLongitude())
-  }
+	var location: FusionLocation_Common.Location {
+		FusionLocation_Common.Location(latitude: self.getLatitude(), longitude: self.getLongitude())
+	}
 }
 
 
 class LocationListener: Object, AndroidLocation.LocationListener {
-  var receiver: ((FusionLocation_Common.Location?) -> Void)?
-  var locationManager: LocationManager?
+	var receiver: ((FusionLocation_Common.Location?) -> Void)?
+	var locationManager: LocationManager?
   
-  func onLocationChanged(location: AndroidLocation.Location?) { 
-    guard let receiver = receiver, let location = location else { return }
-    if let locationManager = self.locationManager, locationManager.isOnlyOnce {
-    	locationManager.stopUpdatingLocation()
-    	locationManager.isOnlyOnce = false
-    }
+	func onLocationChanged(location: AndroidLocation.Location?) { 
+		guard let receiver = receiver, let location = location else { return }
+		if let locationManager = self.locationManager, locationManager.isOnlyOnce {
+ 			locationManager.stopUpdatingLocation()
+			locationManager.isOnlyOnce = false
+		}
     
-    receiver(location.location)
-  }
+		receiver(location.location)
+	}
 
-  func onStatusChanged(provider: String, status: Int32, extras: Bundle?) { 
+	func onStatusChanged(provider: String, status: Int32, extras: Bundle?) { 
   
-  }
+  	}
 
-  func onProviderEnabled(provider: String) { 
-  
-  }
+	func onProviderEnabled(provider: String) { 
+  	}
 
-  func onProviderDisabled(provider: String) { 
+	func onProviderDisabled(provider: String) { 
   
-  }
+	}
 }
