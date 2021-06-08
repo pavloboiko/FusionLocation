@@ -10,66 +10,65 @@ import FusionLocation_Common
 
 public class LocationManager {
 
-  typealias AndroidLocationManager = AndroidLocation.LocationManager
+	typealias AndroidLocationManager = AndroidLocation.LocationManager
 
-  private var currentActivity: Activity? { Application.currentActivity }
+	private var currentActivity: Activity? { Application.currentActivity }
 
-  private let locationManager: AndroidLocationManager?
-  private let locationListener: LocationListener
+	private let locationManager: AndroidLocationManager?
+	private let locationListener: LocationListener
   
-  public let usage: LocationUsage
-  public var isOnlyOnce: Bool = false
+	public let usage: LocationUsage
+	public var isOnlyOnce: Bool = false
   
   
-  public required init(usage: LocationUsage) {
-    self.usage = usage
+	public required init(usage: LocationUsage) {
+		self.usage = usage
 
-    self.locationManager =
-      Application.currentActivity?.getSystemService(name: ContextStatic.LOCATION_SERVICE)
-      as? AndroidLocationManager
+		self.locationManager =
+			Application.currentActivity?.getSystemService(name: ContextStatic.LOCATION_SERVICE)
+			as? AndroidLocationManager
   
-    self.locationListener = LocationListener()
-    self.locationListener.locationManager = self
-  }
+		self.locationListener = LocationListener()    
+	}
 }
 
 extension LocationManager: LocationManagerProtocol {
+	public func requestAuthorization() {
+		currentActivity?.requestPermissions(      
+		permissions: [Manifest.permission.ACCESS_FINE_LOCATION], requestCode: 1111)
+	}
 
-  public func requestAuthorization() {
-    currentActivity?.requestPermissions(      
-      permissions: [Manifest.permission.ACCESS_FINE_LOCATION], requestCode: 1111)
-  }
+	public func checkAuthorization() -> Bool {
+		guard
+			let status = currentActivity?.checkSelfPermission(
+			permission: Manifest.permission.ACCESS_FINE_LOCATION),
 
-  public func checkAuthorization() -> Bool {
-    guard
-      let status = currentActivity?.checkSelfPermission(
-        permission: Manifest.permission.ACCESS_FINE_LOCATION),
+			status == PackageManagerStatic.PERMISSION_GRANTED
+		else {  
+			return false
+		}
 
-      status == PackageManagerStatic.PERMISSION_GRANTED
-    else {  
-      return false
-    }
+		return true
+	}
 
-    return true
-  }
-
-  public func requestCurrentLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {    
-  	self.locationListener.receiver = receiver  
-  	guard checkAuthorization() else {
-       receiver(nil)
-       return
-    }
+	public func requestCurrentLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {    
+		self.locationListener.receiver = receiver  
+		guard checkAuthorization() else {
+			receiver(nil)
+			return
+		}
         		
-   	guard
-    	let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
-    else {
-      return
-    }   
+		guard
+			let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
+		else {
+			return
+		}   
     
-   isOnlyOnce = true
+		self.locationListener.locationManager = self
+		isOnlyOnce = true
 
-   self.locationManager?.requestLocationUpdates(provider: provider, minTime: 400, minDistance: 1, listener: locationListener)
-  }
+		self.locationManager?.requestLocationUpdates(provider: provider, minTime: 400, minDistance: 1, listener: locationListener)
+	}
 
 	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
 		self.locationListener.receiver = receiver

@@ -109,5 +109,9 @@ extension LocationManager.CLDelegate: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
     }
+    
+	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        receiver?(nil)
+    }
 }
 #endif
