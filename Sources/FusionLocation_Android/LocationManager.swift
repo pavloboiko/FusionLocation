@@ -1,6 +1,7 @@
 import Java
 import Android
 import AndroidOS
+import AndroidOSLooper
 import AndroidApp
 import AndroidContent
 import AndroidLocation
