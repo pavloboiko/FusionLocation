@@ -18,6 +18,8 @@ public class LocationManager {
   private let locationListener: LocationListener
   
   public let usage: LocationUsage
+  public var isOnlyOnce: Bool = false
+  
   
   public required init(usage: LocationUsage) {
     self.usage = usage
@@ -32,8 +34,7 @@ public class LocationManager {
 }
 
 extension LocationManager: LocationManagerProtocol {
-  var isOnlyOnce = false
-  
+
   public func requestAuthorization() {
     currentActivity?.requestPermissions(      
       permissions: [Manifest.permission.ACCESS_FINE_LOCATION], requestCode: 1111)
@@ -68,8 +69,6 @@ extension LocationManager: LocationManagerProtocol {
    isOnlyOnce = true
 
    self.locationManager?.requestLocationUpdates(provider: provider, minTime: 400, minDistance: 1, listener: locationListener)
-
-   receiver(aLocation.location)
   }
 
 	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
