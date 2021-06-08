@@ -54,7 +54,7 @@ extension LocationManager: LocationManagerProtocol {
   public func requestCurrentLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {    
   	self.locationListener.receiver = receiver  		
    	guard
-    	let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: false)
+    	let provider = self.locationManager?.getBestProvider(criteria: Criteria(), enabledOnly: true)
     else {
       return
     }   
