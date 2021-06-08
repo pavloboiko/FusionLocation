@@ -59,7 +59,7 @@ extension LocationManager: LocationManagerProtocol {
       return
     }   
     
-    self.locationManager?.requestSingleUpdate(provider: provider, listener: locationListener, looper: Looper())
+    self.locationManager?.requestSingleUpdate(provider: provider, listener: locationListener, looper: AndroidOS.Looper())
   }
 
 	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
