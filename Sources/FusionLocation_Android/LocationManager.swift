@@ -59,7 +59,7 @@ extension LocationManager: LocationManagerProtocol {
       return
     }   
     
-    self.locationManager?.requestSingleUpdate(provider: provider, listener: locationListener, looper: nil)
+    self.locationManager?.requestSingleUpdate(provider: provider, listener: locationListener)
   }
 
 	public func startUpdatingLocation(receiver: @escaping (FusionLocation_Common.Location?) -> Void) {
